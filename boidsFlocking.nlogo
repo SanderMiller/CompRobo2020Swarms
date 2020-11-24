@@ -1,16 +1,31 @@
 to setup
   clear-all
-  create-turtles 10
   reset-ticks
+  setup-turtles
+end
+
+to setup-turtles
+  create-turtles 200
+  ask turtles [ setxy random-xcor random-ycor
+    set color red   ]
 end
 
 to go
-  ask turtles [
+  move-turtles
+  tick
+end
+
+to move-turtles
+ ask turtles [
+    set color blue
+    ask other turtles-here[
+      set color green
+    ]
     fd 1            ;; forward 1 step
     rt random 10    ;; turn right
     lt random 10    ;; turn left
   ]
-  tick
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -27,8 +42,8 @@ GRAPHICS-WINDOW
 1
 1
 0
-0
-0
+1
+1
 1
 -25
 25
