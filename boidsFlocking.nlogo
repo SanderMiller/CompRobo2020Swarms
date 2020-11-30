@@ -1,13 +1,26 @@
+;; Patch = 10cm
+;; World = 10mx10m
+;; Robot = 30cmx30
+;; Sensing Distance = 50cm
+
+
+turtles-own
+[speed]
+
 to setup
   clear-all
   reset-ticks
   setup-turtles
 end
 
+
 to setup-turtles
-  create-turtles 200
-  ask turtles [ setxy random-xcor random-ycor
-    set color red   ]
+
+  create-turtles 50
+  [set size 3 ;;30cm
+    setxy random-xcor random-ycor
+  set color red
+    set speed baseSpeed]
 end
 
 to go
@@ -17,25 +30,43 @@ end
 
 to move-turtles
  ask turtles [
-    set color blue
-    ask other turtles-here[
-      set color green
+   set color blue
+   let numTurtles 1
+   let avgHeading heading
+   let sumHeadings heading
+   let xSum cos heading
+   let ySum sin heading
+
+  ask other turtles in-radius 5
+        [
+          set xSum (xSum + (cos heading))
+          set ySum (ySum + (sin heading))
+          set sumHeadings (sumHeadings + heading)
+          set numTurtles (numTurtles + 1)
+          set color green
     ]
-    fd 1            ;; forward 1 step
-    rt random 10    ;; turn right
-    lt random 10    ;; turn left
+    ;;ifelse (x = 0) and (y = 0)[set avgHeading 0]
+    ;;ifelse
+    set avgHeading atan (xSum / numTurtles) (ySum / numTurtles)
+    set heading avgHeading
+;; each turtle makes a red "splotch" around itself
+    ;;rt random 2    ;; turn right
+    ;;lt random 2   ;; turn left
+    fd speed           ;; forward 1 step
+
   ]
 
 end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
 10
-881
-682
+1223
+1024
 -1
 -1
-13.0
+5.0
 1
 10
 1
@@ -45,10 +76,10 @@ GRAPHICS-WINDOW
 1
 1
 1
--25
-25
--25
-25
+-100
+100
+-100
+100
 0
 0
 1
@@ -79,7 +110,7 @@ BUTTON
 112
 go
 go
-NIL
+T
 1
 T
 OBSERVER
@@ -88,6 +119,21 @@ NIL
 NIL
 NIL
 1
+
+SLIDER
+36
+135
+208
+168
+baseSpeed
+baseSpeed
+0.00001
+0.0001
+1.0E-4
+.00001
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
