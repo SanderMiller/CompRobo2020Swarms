@@ -45,10 +45,23 @@ to move-turtles
           set numTurtles (numTurtles + 1)
           set color green
     ]
-    ;;ifelse (x = 0) and (y = 0)[set avgHeading 0]
-    ;;ifelse
-    set avgHeading atan (xSum / numTurtles) (ySum / numTurtles)
+    ifelse (xSum = 0) and (ySum = 0)[set avgHeading 0] [set avgHeading atan (ySum / numTurtles) (xSum / numTurtles)]
+    ifelse heading - avgHeading < 0 [set heading heading + 1] [set heading heading - 1]
+
     set heading avgHeading
+
+
+   let numTurtles 1
+   let xPosSum 0
+   let yPosSum 0
+    ask other turtles in-radius 2
+        [
+          set xPosSum (xSum + (cos heading))
+          set yPosSum (ySum + (sin heading))
+          set sumHeadings (sumHeadings + heading)
+          set numTurtles (numTurtles + 1)
+          set color red
+    ]
 ;; each turtle makes a red "splotch" around itself
     ;;rt random 2    ;; turn right
     ;;lt random 2   ;; turn left
@@ -57,6 +70,7 @@ to move-turtles
   ]
 
 end
+
 
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -123,14 +137,14 @@ NIL
 SLIDER
 36
 135
-208
+326
 168
 baseSpeed
 baseSpeed
-0.00001
-0.0001
-1.0E-4
-.00001
+0.05
+0.1
+0.05
+.01
 1
 NIL
 HORIZONTAL
