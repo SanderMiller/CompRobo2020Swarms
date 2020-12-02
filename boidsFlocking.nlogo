@@ -36,6 +36,7 @@ to move-turtles
    let sumHeadings heading
    let xSum cos heading
    let ySum sin heading
+   let initHeading heading
 
   ask other turtles in-radius 5
         [
@@ -46,9 +47,10 @@ to move-turtles
           set color green
     ]
     ifelse (xSum = 0) and (ySum = 0)[set avgHeading 0] [set avgHeading atan (ySum / numTurtles) (xSum / numTurtles)]
-    ifelse heading - avgHeading < 0 [set heading heading + 1] [set heading heading - 1]
+    if numTurtles > 1 and initHeading - avgHeading < 0 [rt .5 ]
+    if numTurtles > 1 and initHeading - avgHeading > 0 [lt .5 ]
 
-    set heading avgHeading
+
 
 
    set numTurtles 1
@@ -63,8 +65,8 @@ to move-turtles
           set color red
     ]
 ;; each turtle makes a red "splotch" around itself
-    rt random 10   ;; turn right
-    lt random 10   ;; turn left
+    rt random 2   ;; turn right
+    lt random 2   ;; turn left
     fd speed;;speed         ;; forward 1 step
 
   ]
