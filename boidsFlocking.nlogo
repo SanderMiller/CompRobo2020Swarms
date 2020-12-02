@@ -19,7 +19,7 @@ to setup-turtles
   create-turtles 50
   [set size 3 ;;30cm
     setxy random-xcor random-ycor
-  set color red
+  set color blue
     set speed baseSpeed]
 end
 
@@ -51,21 +51,21 @@ to move-turtles
     set heading avgHeading
 
 
-   let numTurtles 1
+   set numTurtles 1
    let xPosSum 0
    let yPosSum 0
     ask other turtles in-radius 2
         [
-          set xPosSum (xSum + (cos heading))
-          set yPosSum (ySum + (sin heading))
-          set sumHeadings (sumHeadings + heading)
-          set numTurtles (numTurtles + 1)
+          ;;set xPosSum (xSum + (cos heading))
+          ;;set yPosSum (ySum + (sin heading))
+          ;;set sumHeadings (sumHeadings + heading)
+          ;;set numTurtles (numTurtles + 1)
           set color red
     ]
 ;; each turtle makes a red "splotch" around itself
-    ;;rt random 2    ;; turn right
-    ;;lt random 2   ;; turn left
-    fd speed           ;; forward 1 step
+    rt random 10   ;; turn right
+    lt random 10   ;; turn left
+    fd speed;;speed         ;; forward 1 step
 
   ]
 
