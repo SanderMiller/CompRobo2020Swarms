@@ -16,7 +16,7 @@ end
 
 to setup-turtles
 
-  create-turtles 50
+  create-turtles 5;;50
   [set size 3 ;;30cm
     setxy random-xcor random-ycor
   set color blue
@@ -56,14 +56,22 @@ to move-turtles
    set numTurtles 1
    let xPosSum 0
    let yPosSum 0
-    ask other turtles in-radius 2
-        [
-          ;;set xPosSum (xSum + (cos heading))
-          ;;set yPosSum (ySum + (sin heading))
-          ;;set sumHeadings (sumHeadings + heading)
-          ;;set numTurtles (numTurtles + 1)
+
+   let closeMates other turtles in-radius 2
+   print closeMates
+   if length closeMates != 0 [
+      let nearestNeighbor min-one-of closeMates [distance myself]
+      let headingToNearest towards nearestNeighbor
+      let headingAway (headingToNearest + 180) mod 360
+
+      if initHeading - headingAway  < 0 [rt .5 ]
+      if initHeading - headingAway > 0 [lt .5 ]
+    ]
+   ask closeMates[
           set color red
     ]
+
+
 ;; each turtle makes a red "splotch" around itself
     rt random 2   ;; turn right
     lt random 2   ;; turn left
