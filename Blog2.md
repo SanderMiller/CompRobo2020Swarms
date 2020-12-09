@@ -13,10 +13,19 @@ Once we had proximity detection in place we had to calculate an average heading 
 <p align="center">
   <img width="600" height="400" src="./Images/CalculatingAvgHeading.jpg">
   
-The above formula takes the inverse tangent (atan2) of the average sin and average cosine to build the new heading. This method works mathematically to average angles, however it was challenging to implement in NetLogo as NetLogo does not have a dedicated `atan2` function. To yield the atan2 behavior one must use the normal `atan` function but switch the order of the arguments. This can be seen with the expressions below which demonstrate the syntax for calling atan and atan2 in NetLogo
+The above formula takes the inverse tangent (atan2) of the average sin and average cosine to build the new heading. This method works mathematically to average angles, however it was challenging to implement in NetLogo as NetLogo does not have a dedicated `atan2` function. To yield the atan2 behavior one must use the normal `atan` function but switch the order of the arguments. The full implementation of this in NetLogo can be seen below.
 
-    atan() => atan x y 
-    atan2() => atan y x
+      ask other turtles in-radius 5
+        [
+          set xSum (xSum + (cos heading)) ;; Add up all the heading cosines (x)
+          set ySum (ySum + (sin heading)) ;; Add up all the heading sines (y)
+          set numTurtles (numTurtles + 1) ;; Count the total number of agents
+        ]
+        
+        ;; Take the inverse tangent of averageY/ averageX
+        ifelse (xSum = 0) and (ySum = 0)[set avgHeading 0] [set avgHeading atan (ySum / numTurtles) (xSum / numTurtles)]
+        if numTurtles > 1 and initHeading - avgHeading < 0 [rt .5 ] ;; Turn right
+        if numTurtles > 1 and initHeading - avgHeading > 0 [lt .5 ] ;; Turn left
     
 Once we had the average heading, we simply subtracted the agent heading from the average heading to get an indicator of which direction the agent should turn (a negative difference indicates a right turn is needed, and a positive difference means a left turn is needed.) Taken together, agents now correct towards the average heading of their neighbors for any agents inside their sensing range.
 
