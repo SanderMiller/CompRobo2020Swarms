@@ -3,9 +3,9 @@
 ;; Robot = 30cmx30
 ;; Sensing Distance = 50cm
 
-
 turtles-own
-[speed]
+[speed alignRadius separationRad]
+
 
 to setup
   clear-all
@@ -16,11 +16,17 @@ end
 
 to setup-turtles
 
-  create-turtles 5;;50
+  create-turtles numTurtles
+
   [set size 3 ;;30cm
     setxy random-xcor random-ycor
-  set color blue
-    set speed baseSpeed]
+    set color blue
+    set speed baseSpeed
+      set alignRadius alignmentRadius
+    set separationRad (separationRadiusPercentage * .01) * alignRadius
+
+  ]
+
 end
 
 to go
@@ -28,38 +34,40 @@ to go
   tick
 end
 
-to move-turtles
- ask turtles [
-   set color blue
-   let numTurtles 1
+
+to alignment
+   let numLocalTurtles 1
    let avgHeading heading
    let sumHeadings heading
    let xSum cos heading
    let ySum sin heading
    let initHeading heading
 
-  ask other turtles in-radius 5
+  ask other turtles in-radius alignRadius
         [
           set xSum (xSum + (cos heading))
           set ySum (ySum + (sin heading))
           set sumHeadings (sumHeadings + heading)
-          set numTurtles (numTurtles + 1)
-          set color green
+          set numLocalTurtles (numLocalTurtles + 1)
+          ;;set color green
     ]
-    ifelse (xSum = 0) and (ySum = 0)[set avgHeading 0] [set avgHeading atan (ySum / numTurtles) (xSum / numTurtles)]
-    if numTurtles > 1 and initHeading - avgHeading < 0 [rt .5 ]
-    if numTurtles > 1 and initHeading - avgHeading > 0 [lt .5 ]
+    ifelse (xSum = 0) and (ySum = 0)[set avgHeading 0] [set avgHeading atan (ySum / numLocalTurtles) (xSum / numLocalTurtles)]
+    if numLocalTurtles > 1 and initHeading - avgHeading < 0 [rt .5 ]
+    if numLocalTurtles > 1 and initHeading - avgHeading > 0 [lt .5 ]
 
+end
 
-
-
-   set numTurtles 1
+to separation
+   let numLocalTurtles 1
    let xPosSum 0
    let yPosSum 0
+   let initHeading heading
 
-   let closeMates other turtles in-radius 2
-   print closeMates
-   if length closeMates != 0 [
+
+   let closeMates other turtles in-radius separationRad
+
+  ;; Currently Steers from nearest neighbor
+   if count closeMates != 0 [
       let nearestNeighbor min-one-of closeMates [distance myself]
       let headingToNearest towards nearestNeighbor
       let headingAway (headingToNearest + 180) mod 360
@@ -68,26 +76,51 @@ to move-turtles
       if initHeading - headingAway > 0 [lt .5 ]
     ]
    ask closeMates[
-          set color red
+          ;;set color red
     ]
+end
 
-
-;; each turtle makes a red "splotch" around itself
-    rt random 2   ;; turn right
-    lt random 2   ;; turn left
-    fd speed;;speed         ;; forward 1 step
-
+to move-turtles
+ ask turtles [
+   ;;set color blue
+   alignment
+   separation
+   colorizeSwarms
+   rt random 2   ;; turn right
+   lt random 2   ;; turn left
+   fd speed      ;; forward 1 step
   ]
+end
+
+to colorizeSwarms
+  let flockMates other turtles in-radius alignRadius
+  let hasNeighbors 0
+  let mateColor one-of base-colors
+  set color mateColor
+
+  if count flockMates != 0 [
+    set mateColor first modes ([color] of flockMates)
+    set color mateColor
+    set hasNeighbors 1
+   ]
+
+
+
+  ;;set color ifelse-value (hasNeighbors = 1) [mateColor][one-of base-colors]
+  ;;set pcolor ifelse-value (pxcor > 0) [blue] [red]
+
+ ;;]
+
+
 
 end
 
-
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+869
 10
-1223
-1024
+1882
+824
 -1
 -1
 5.0
@@ -102,8 +135,8 @@ GRAPHICS-WINDOW
 1
 -100
 100
--100
-100
+-80
+80
 0
 0
 1
@@ -145,16 +178,61 @@ NIL
 1
 
 SLIDER
-36
-135
-326
-168
+119
+28
+409
+61
 baseSpeed
 baseSpeed
-0.05
-0.1
-0.05
+0.001 * numTurtles
+0.01 * numTurtles
+0.151
 .01
+1
+NIL
+HORIZONTAL
+
+SLIDER
+428
+28
+605
+61
+alignmentRadius
+alignmentRadius
+1
+10
+5.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+429
+72
+696
+105
+separationRadiusPercentage
+separationRadiusPercentage
+0
+100
+60.0
+5
+1
+NIL
+HORIZONTAL
+
+SLIDER
+123
+75
+295
+108
+numTurtles
+numTurtles
+1
+200
+151.0
+10
 1
 NIL
 HORIZONTAL
