@@ -2,9 +2,9 @@
 ;; World = 10mx10m
 ;; Robot = 30cmx30
 ;; Sensing Distance = 50cm
-
+globals [predators prey]
 turtles-own
-[speed alignRadius separationRad]
+[speed alignRadius separationRad predator]
 
 
 to setup
@@ -16,7 +16,8 @@ end
 
 to setup-turtles
 
-  create-turtles numTurtles
+  create-turtles numPrey
+
 
   [set size 3 ;;30cm
     setxy random-xcor random-ycor
@@ -24,13 +25,25 @@ to setup-turtles
     set speed baseSpeed
       set alignRadius alignmentRadius
     set separationRad (separationRadiusPercentage * .01) * alignRadius
-
+    set predator false
   ]
+  set prey turtles with [predator = False]
+  create-turtles numPredators
+  [set size 5 ;;30cm
+    setxy random-xcor random-ycor
+    set color red
+    set shape "Arrow"
+    set speed baseSpeed
+    set predator true
+  ]
+  set predators turtles with [predator = True]
+
 
 end
 
 to go
-  move-turtles
+  move-prey
+  move-predators
   tick
 end
 
@@ -43,17 +56,26 @@ to alignment
    let ySum sin heading
    let initHeading heading
 
-  ask other turtles in-radius alignRadius
+  let closePredators other predators in-radius (predatorViewMultiplier * alignRadius)
+  ifelse (count closePredators = 0)[
+  ask other prey in-radius alignRadius
         [
           set xSum (xSum + (cos heading))
           set ySum (ySum + (sin heading))
           set sumHeadings (sumHeadings + heading)
           set numLocalTurtles (numLocalTurtles + 1)
-          ;;set color green
-    ]
+        ]
     ifelse (xSum = 0) and (ySum = 0)[set avgHeading 0] [set avgHeading atan (ySum / numLocalTurtles) (xSum / numLocalTurtles)]
     if numLocalTurtles > 1 and initHeading - avgHeading < 0 [rt .5 ]
     if numLocalTurtles > 1 and initHeading - avgHeading > 0 [lt .5 ]
+  ][
+      let nearestPred min-one-of closePredators [distance myself]
+      let headingToNearest towards nearestPred
+      let headingAway (headingToNearest + 180) mod 360
+      if initHeading - headingAway  < 0 [rt turningSpeed]
+      if initHeading - headingAway > 0 [lt turningSpeed]
+  ]
+
 
 end
 
@@ -64,7 +86,9 @@ to separation
    let initHeading heading
 
 
-   let closeMates other turtles in-radius separationRad
+   let closeMates other prey in-radius separationRad
+   ;;let closePrey closeMates with [not member? predators]
+
 
   ;; Currently Steers from nearest neighbor
    if count closeMates != 0 [
@@ -72,16 +96,32 @@ to separation
       let headingToNearest towards nearestNeighbor
       let headingAway (headingToNearest + 180) mod 360
 
-      if initHeading - headingAway  < 0 [rt .5 ]
-      if initHeading - headingAway > 0 [lt .5 ]
+      if initHeading - headingAway  < 0 [rt 1 ]
+      if initHeading - headingAway > 0 [lt 1 ]
     ]
    ask closeMates[
           ;;set color red
     ]
 end
 
-to move-turtles
- ask turtles [
+to colorizeSwarms
+
+  let flockMates other prey in-radius alignRadius
+  let hasNeighbors 0
+  let colorSet [5 25 35 45 55 65 75 85 95 105 115 125 135]
+  let mateColor one-of colorSet
+  set color mateColor
+
+  if count flockMates != 0 [
+    set mateColor one-of modes ([color] of flockMates)
+    set color mateColor
+    set hasNeighbors 1
+    ]
+
+end
+
+to move-prey
+ ask prey [
    ;;set color blue
    alignment
    separation
@@ -89,31 +129,19 @@ to move-turtles
    rt random 2   ;; turn right
    lt random 2   ;; turn left
    fd speed      ;; forward 1 step
+
   ]
 end
 
-to colorizeSwarms
-  let flockMates other turtles in-radius alignRadius
-  let hasNeighbors 0
-  let mateColor one-of base-colors
-  set color mateColor
-
-  if count flockMates != 0 [
-    set mateColor first modes ([color] of flockMates)
-    set color mateColor
-    set hasNeighbors 1
-   ]
-
-
-
-  ;;set color ifelse-value (hasNeighbors = 1) [mateColor][one-of base-colors]
-  ;;set pcolor ifelse-value (pxcor > 0) [blue] [red]
-
- ;;]
-
-
-
+to move-predators
+  ask predators[
+   rt random 4   ;; turn right
+   lt random 4   ;; turn left
+   fd 1.2 * speed     ;; forward 1 step
+  ]
 end
+
+
 
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -184,9 +212,9 @@ SLIDER
 61
 baseSpeed
 baseSpeed
-0.001 * numTurtles
-0.01 * numTurtles
-0.151
+0.001 * numPrey
+0.01 * numPrey
+0.431
 .01
 1
 NIL
@@ -216,7 +244,7 @@ separationRadiusPercentage
 separationRadiusPercentage
 0
 100
-60.0
+50.0
 5
 1
 NIL
@@ -227,12 +255,57 @@ SLIDER
 75
 295
 108
-numTurtles
-numTurtles
+numPrey
+numPrey
 1
 200
-151.0
+200.0
 10
+1
+NIL
+HORIZONTAL
+
+SLIDER
+123
+125
+295
+158
+numPredators
+numPredators
+0
+5
+1.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+430
+118
+647
+151
+predatorViewMultiplier
+predatorViewMultiplier
+1
+5
+2.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+432
+167
+604
+200
+turningSpeed
+turningSpeed
+1
+10
+10.0
+1
 1
 NIL
 HORIZONTAL
