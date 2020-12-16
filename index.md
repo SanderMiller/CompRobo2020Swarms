@@ -1,2 +1,2 @@
 # Hello World!
-<object data=https://sandermiller.github.io/CompRobo2020Swarms/boidsFlocking.html width="600" height="400"> <embed src=https://sandermiller.github.io/CompRobo2020Swarms/boidsFlocking.html width="600" height="400"> </embed> Error: Embedded data could not be displayed. </object>
+<embed src=https://sandermiller.github.io/CompRobo2020Swarms/boidsFlocking.html width="600" height="400"> </embed>
