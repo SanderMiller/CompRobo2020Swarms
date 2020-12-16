@@ -1,3 +1,3 @@
 # Hello World!
 
-<embed src=https://sandermiller.github.io/CompRobo2020Swarms/boidsFlocking.html width="600" height="400">
+<iframe id="NetlogoModel" width="300" height="200" src="https://sandermiller.github.io/CompRobo2020Swarms/boidsFlocking.html" frameborder="0"></iframe>
