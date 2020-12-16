@@ -7,7 +7,7 @@ We were primarily interested in analyzing the collective behaviour of a swarm. I
 
 ## Our Agents
 
-<img align="right" img height = 400 src="https://github.com/SanderMiller/CompRobo2020Swarms/blob/main/Images/MultipleAgents.png">
+<img align="right" img height = 250 src="https://github.com/SanderMiller/CompRobo2020Swarms/blob/main/Images/MultipleAgents.png">
 
 The agents used in our simulation have three properties, color, speed, and heading. They have no sense of their absolute position within the map.
 They are also able to sense, localize, and transfer information to any other agents within a given radius.
