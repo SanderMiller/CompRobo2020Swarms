@@ -3,7 +3,7 @@ The goal of our project was to gain a deeper understanding of decentralized mult
 of Boid's Swarming algorithm. 
 
 ## Selecting a Modeling Platform
-We were primarily interested in the modeling of collective 
+We were primarily interested in analyzing the collective behaviour of a swarm. In order to minimize unneccessary complexity we looked for a platform made for agent-based modeling, rather than a physics based platform such as ROS. We ended up choosing [NetLogo](https://ccl.northwestern.edu/netlogo/)
 
 ## Our Agents
 
