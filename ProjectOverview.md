@@ -3,7 +3,7 @@ The goal of our project was to gain a deeper understanding of decentralized mult
 of Boid's Swarming algorithm. 
 
 ## Selecting a Modeling Platform
-We were primarily interested in analyzing the collective behaviour of a swarm. In order to minimize unneccessary complexity we looked for a platform made for agent-based modeling, rather than a physics based platform such as ROS. We ended up choosing [NetLogo](https://ccl.northwestern.edu/netlogo/) for its built in graphical user interface and visualization. These features allowed us to begin working on the model behaviour on day one. Although NetLogo uses its own programming language, we found that the NetLogo [programming guide](https://ccl.northwestern.edu/netlogo/5.3.0/programming.html#agents) and [dictionary](http://ccl.northwestern.edu/netlogo/docs/index2.html) made the transition to a new language relatively easy.
+We were primarily interested in analyzing the collective behaviour of a swarm. In order to minimize unneccessary complexity we looked for a platform made for agent-based modeling, rather than a physics based platform such as ROS. We ended up choosing [NetLogo](https://ccl.northwestern.edu/netlogo/) for its built in graphical user interface and visualization. These features allowed us to begin working on the model behaviour on day one. Although NetLogo uses its own programming language, we found that the NetLogo [programming guide](https://ccl.northwestern.edu/netlogo/5.3.0/programming.html) and [dictionary](http://ccl.northwestern.edu/netlogo/docs/index2.html) made the transition to a new language relatively easy.
 
 ## Our Agents
 
