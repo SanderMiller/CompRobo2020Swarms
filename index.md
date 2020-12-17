@@ -23,6 +23,29 @@ They are also able to **sense, localize, and transfer information** to any other
 
 ## Adding Predators
 
+### Inspiration
+
+Once we got the base implementation of the flocking behavior implemented we wanted to extend the simulation. The Boid's flocking algorithm effectively mimics the flocking/schooling of fish. We decided to add in the behavior of avoiding predators as in real fish schooling this behavior significantly impacts the shape of schools.
+
+<iframe id"FishSchoolingVideo" width="800" height"500" src="https://www.youtube.com/watch?v=tjSxHNhtTyE&ab_channel=CGTN" frameborder="0"></iframe>
+
+We can see the real world behavior we were attempting to replicate in the video above. As we can see the fish school kind of forms large open tunnels where the sharks swim through the school. 
+
+### implementation
+
+The fundamental behavior of avoiding predators is implemented in the same manner as the separation component of the base boid's algorithm. When a predator gets too close to the prey, the prey will correct towards the heading which points directly away form the predator. To mimic the panicked behavior of the fish when this occurs we added two components to this. Firstly the correction way from the predator is of a more severe angle then any of the flocking corrections which results in a more dramatic behavior rather then the gradual course adjustment underlying the flocking behaviors. Secondly we made escaping the predator take precedence over the flocking alignment behaviors. This means that the prey will prioritize corrections away from the predator as a replacement for corrections towards their flock or away from other prey until the fish is sufficiently far away from the predator that it returns to normal behavior. 
+
+To allow the prey to distinguish the predators the predators are initialized separately and stored as a separate agent set. This means that the prey will perform flocking behaviors only with other prey and this prevents fish attempting to flock or color match with predators. Predators are agents which follow separate rules and so we denoted predators with a red arrow, a different color and shape from the prey. We had predators follow the same random pathing behavior that the fish have when not flocking so that the predators will naturally wander the space and the prey flocks will avoid the predators.
+
+### difficulties
+
+Firstly we ran into the problem that predator's and prey had the same speed this led to behaviors where flocks of prey would get 'stuck' in front of the predator constantly running away in the direction of the predator's movement but the state would continue until the predator turned away. IN the real world predators, especially sharks of the inspiration material, are stronger and faster than their prey so they tend to outpace the prey and catch them. To rectify this we made the predator move at a multiple of 1.2 times the speed of the prey. This meant that the predator would catch up with the prey in a chase scenario. As a result of this the prey would be forced to veer of course more to escape the predator.
+
+Secondly, we noticed that the prey were not really behaving in the same manner as we had observed in the video. The predators tended to 'snowplough' the prey out of the way running into them and forcing them out of the way , rather than the wide swaths around the predators we see in the inspiration.
+[TODO: gif of snowplough behavior]
+ To solve this we realized that predators are often larger than the prey, and so prey are able to spot them form a larger distance away than they are able to recognise then fellow flock members. To replicate this we increased the recognition radius for the predators relative to the recognition radius for fellow flockmates. The result of this was that prey seemed to part in swaths for the predator similar to how we can see in the inspiration.
+[todo gif of normal behavior]  
+
 ## Collective Behaviours
 
 ## Next Steps
