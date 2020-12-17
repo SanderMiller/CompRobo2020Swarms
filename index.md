@@ -10,13 +10,15 @@ We were primarily interested in analyzing the collective behaviour of a swarm. I
 ## Our Agents
 
 
-![Many Agents](Images/MultipleAgents.png)
+<p align="center">
+  <img src="Images/MultipleAgents.png" />
+</p>
 
 The agents used in our simulation have three properties, **color**, **speed**, and **heading**. They have no sense of their absolute position within the map.
 They are also able to **sense, localize, and transfer information** to any other agents within a given radius.
 
 
-Text Updated
+Text Updated2
 
 
 
