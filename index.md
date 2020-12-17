@@ -83,7 +83,7 @@ Finally, if this remapped difference is negative we turn the agent right, and if
 
 Once we got the base implementation of the flocking behavior implemented we wanted to extend the simulation. The Boid's flocking algorithm effectively mimics the flocking/schooling of fish. We decided to add in the behavior of avoiding predators as in real fish schooling this behavior significantly impacts the shape of schools.
 
-<iframe id"FishSchoolingVideo" width="800" height"500" src="https://www.youtube.com/watch?v=tjSxHNhtTyE&ab_channel=CGTN" frameborder="0"></iframe>
+[![FishSchoolingVideo](https://www.youtube.com/watch?v=tjSxHNhtTyE&ab_channel=CGTN")](https://www.youtube.com/watch?v=tjSxHNhtTyE&ab_channel=CGTN" "FishSchoolingVideo")
 
 We can see the real world behavior we were attempting to replicate in the video above. As we can see the fish school kind of forms large open tunnels where the sharks swim through the school. 
 
