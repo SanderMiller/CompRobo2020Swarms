@@ -27,7 +27,7 @@ As we are investigating decentralized systems, all of our agents run identical c
 The first rule of Boids algorithm says that **agents too close together will turn away from each other** to spread out.
 
 
-Our separation radius is defined as a percentage of the visibility radius. Any agents within this radius are considered too close. In order to maintain spacing the separation function provides the heading 
+Our separation radius is defined as a percentage of the visibility radius. Any agents within this radius are considered too close. In order to maintain spacing the separation function provides the heading directly away from the center of mass of agents within the separation radius. Due to the decentralized architecture of the swarm the agents are unaware of their absolute position. Instead we can track visible flockmates positions as a polar coordinates (distance and angle) with respect to a given agent. These polar coordinates are converted to cartesian coordinates using the equations _x = r * cos(θ)_ and _y = r * sin(θ)_. The x and y coordinates for each flock member are added together and then averaged. This gives us the _x_ and _y_ coordinates of the flock's center of mass with respect to a given agent. In order to get the heading to the center of mass we simply take the inverse tangent of the average y coordinate over the average x coordinate. Because the goal of separation is to move away from the center of mass we can calculate the heading directly away by adding 180 to the heading directly toward the center of mass, and taking the modulus 360 to remap the heading to the range 0 to 360.
 
 <p align="center">
   <img src="Images/SeparationDiagramCropped.jpg" />
@@ -101,7 +101,7 @@ Secondly, we noticed that the prey were not really behaving in the same manner a
 ## Collective Behaviours
 It was very interesting how many different collective behaviours we could create by adjusting the separation, alignment and cohesion weights.
 
-Here is one example where if the cohesion weight is suddenly increased significantly, the flocks will get stuck in an infinite loop circling each other. This could be useful if for whatever reason you wanted to keep the
+Here is one example where if the cohesion weight is suddenly increased significantly, the flocks will get stuck in an infinite loop circling each other. This could be useful if for whatever reason you wanted your swarms to converge and hold one spot.
 <p align="center">
   <img height= 500 img src="Images/WhirlPoolEffect.gif" /> 
 </p>
