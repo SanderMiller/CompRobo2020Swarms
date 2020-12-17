@@ -99,7 +99,12 @@ Secondly, we noticed that the prey were not really behaving in the same manner a
 [todo gif of normal behavior]  
 
 ## Collective Behaviours
-We 
+It was very interesting how many different collective behaviours we could create by adjusting the separation, alignment and cohesion weights.
+
+Here is one example where if the cohesion weight is suddenly increased significantly, the flocks will get stuck in an infinite loop circling each other.
+<p align="center">
+  <img height= 300 img src="Images/WhirlPoolEffect.gif" />
+</p>
 
 ## Next Steps
 We have created a very solid baseline for modeling swarm behaviour, but there are many ways our model can be improved and built upon. One new feature that we were initially planning on implementing was shape formation of our flocks such as forming V's like migrating birds. Another idea would be to make our model better replicate real physics. In our model agents can pass through each other, a good next step would be to add collision detection to the model. A third potential idea is to make the predators more intelligent. Currently they move through the map blindly and randomly. It could be interesting to have the predators be able to sense and chase the prey around.
