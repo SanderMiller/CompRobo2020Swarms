@@ -127,7 +127,7 @@ to separation
 end
 
 ;; a function which turns a prey towards the center of mass of the flock
-to coherence
+to cohesion
    ;;initalize local variables
    let numMates 1 ;;Num agents in the flock
    let flockCMx 0 ;;Flock center of mass x
@@ -159,8 +159,8 @@ to coherence
       let diff initHeading - flockCMang
       if diff < -180 [set diff diff + 360]
       if diff > 180 [set diff diff - 360]
-      if diff   < 0 [lt coherenceWeight]
-      if diff > 0 [rt coherenceWeight]
+      if diff   < 0 [lt cohesionWeight]
+      if diff > 0 [rt cohesionWeight]
     ]
 end
 
@@ -198,7 +198,7 @@ to move-prey
    ;; if no nearby predators perform Boid's algorithm
    separation
    alignment
-   coherence
+   cohesion
     ]
     [
     ;;if nearby predators run away
@@ -428,8 +428,8 @@ SLIDER
 938
 330
 971
-coherenceWeight
-coherenceWeight
+cohesionWeight
+cohesionWeight
 0
 1
 0.5
