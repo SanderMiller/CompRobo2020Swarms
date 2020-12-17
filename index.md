@@ -37,7 +37,7 @@ Once the average heading is calculated we must determine whether the agent must 
         elif difference > 180
           difference -= 360
 
-
+Finally, if this remapped difference is negative we turn the agent right, and if the remapped difference is positive we turn the agent left.
 
 
 ## Adding Predators
