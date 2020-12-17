@@ -95,6 +95,7 @@ Secondly, we noticed that the prey were not really behaving in the same manner a
 We 
 
 ## Next Steps
-We have created a very solid baseline for modeling swarm behaviour, but there are many ways our model can be improved and built upon. Initially we were planning on including shape formation such as having our flocks forming V's like migrating birds. 
+We have created a very solid baseline for modeling swarm behaviour, but there are many ways our model can be improved and built upon. One new feature that we were initially planning on implementing was shape formation of our flocks such as forming V's like migrating birds. Another idea would be to make our model better replicate real physics. In our model agents can pass through each other, a good next step would be to add collision detection to the model. A third potential idea is to make the predators more intelligent. Currently they move through the map blindly and randomly. It could be interesting to have the predators be able to sense and chase the prey around.
+
 ## Conclusion
 
