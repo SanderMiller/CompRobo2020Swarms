@@ -2,7 +2,7 @@
 
 ## Project Overview
 The goal of our project was to gain a deeper understanding of decentralized multi-agent systems and collective behaviour through the implementation 
-of Boid's Swarming algorithm. 
+of Boid's Swarming algorithm.  
 
 ## Selecting a Modeling Platform
 We were primarily interested in analyzing the collective behaviour of a swarm. In order to minimize unnecessary complexity we looked for a platform made for agent-based modeling, rather than a physics based platform such as Gazebo. we also wanted to abstract the system a bit to be able to focus on the broad actions rathr than having to deal with the particulars of which sensors the robots would have and how to communicate between the sensors and the motors thought ROS commands. We ended up choosing [NetLogo](https://ccl.northwestern.edu/netlogo/) for its built in graphical user interface and visualization. Net logo also alows computations to occur spacially beased on agents in proximity so it provided a good platform for abstracting the sensor readings and implementing a distributed swarm robotics algorithm. These features allowed us to begin working on the model behaviour on day one. Although NetLogo uses its own programming language, we found that the NetLogo [programming guide](https://ccl.northwestern.edu/netlogo/5.3.0/programming.html) and [dictionary](http://ccl.northwestern.edu/netlogo/docs/index2.html) made the transition to a new language relatively easy.
@@ -28,6 +28,8 @@ The first rule of Boids algorithm says that **agents too close together will tur
 
 
 Our separation radius is defined as a percentage of the visibility radius. Any agents within this radius are considered too close. In order to maintain spacing the separation function provides the heading directly away from the center of mass of agents within the separation radius. Due to the decentralized architecture of the swarm the agents are unaware of their absolute position. Instead we can track visible flockmates positions as a polar coordinates (distance and angle) with respect to a given agent. These polar coordinates are converted to cartesian coordinates using the equations _x = r * cos(θ)_ and _y = r * sin(θ)_. The x and y coordinates for each flock member are added together and then averaged. This gives us the _x_ and _y_ coordinates of the flock's center of mass with respect to a given agent. In order to get the heading to the center of mass we simply take the inverse tangent of the average y coordinate over the average x coordinate. Because the goal of separation is to move away from the center of mass we can calculate the heading directly away by adding 180 to the heading directly toward the center of mass, and taking the modulus 360 to remap the heading to the range 0 to 360.
+This heading is fed into our steering function.
+
 
 <p align="center">
   <img src="Images/SeparationDiagramCropped.jpg" />
@@ -39,7 +41,9 @@ Our separation radius is defined as a percentage of the visibility radius. Any a
 The second rule of Boids algorithm is that **agents within a flock should turn towards the average heading** of the flock. 
 
 To do this we calculated the average heading of all agents within the visibility radius of each agent. In NetLogo headings are given in degrees between 0 and 360. 
-To calculate the average heading of the flock we first found the corresponding average _x_ and _y_ values of the heading angles by taking the sum of the _cos_ and _sin_ of each heading, then dividing by the number visible agents within the flock. Then we took the inverse tangent of the average y value over the average x value. An example of calculating the average flock heading can be shown below.
+To calculate the average heading of the flock we first found the corresponding average _x_ and _y_ values of the heading angles by taking the sum of the _cos_ and _sin_ of each heading, then dividing by the number visible agents within the flock. Then we took the inverse tangent of the average y value over the average x value. This heading is fed into our steering function.
+
+An example of calculating the average flock heading can be shown below.
 <p align="center">
   <img height= 400 img src="Images/CalculatingAvgHeading.jpg" />
 </p>
@@ -49,13 +53,13 @@ To calculate the average heading of the flock we first found the corresponding a
 ### Cohesion
 The third rule of Boids algorithm says that **agents should steer toward the flock's center of mass**.
 
-This consisted of first calculating the center of mass of the visible agents. Due to the decentralized architecture of the swarm the aents are unaware of their absolute position. Instead we can track visible flockmates positions as a polar coordinates (distance and angle) with respect to a given agent. These polar coordinates are converted to cartesian coordinates using the equations _x = r * cos(θ)_ and _y = r * sin(θ)_. The x and y coordinates for each flock member are added together and then averaged. This gives us the _x_ and _y_ coordinates of the flock's center of mass with respect to a given agent. In order to get the heading to the center of mass we simply take the inverse tangent of the average y coordinate over the average x coordinate.
+Cohesion is very simlar to separation, except that we account for all agents within the full visibility radius, and we head toward the center of mass, rather than away from it. We calculating the center of mass of all visible agents the same way as before using the equations _x = r * cos(θ)_ and _y = r * sin(θ)_ to convert the positions from polar to cartesian. Then we again take the average x and y coordinate by summing up all of the x's and y's and dividing by the total number of agents. In order to get the heading to the center of mass we simply take the inverse tangent of the average y coordinate over the average x coordinate.
+This heading is fed into our steering function.
 
 <p align="center">
   <img height= 350 img src="Images/CohesionDiagFinalCropped.jpg" />
 </p>
 
-Again, we take the difference between the agent's current heading and the heading to the center of mass. Then similarly to the other two steps we remap that difference from -180 to 180. Finally, if this remapped difference is negative we turn the agent right based on our coherence weight, and if the remapped difference is positive we turn the agent left by the cohesion weight.
 
 ### Steering
 Finally we add the three calculated headings, separation, alignment, and cohesion, as vectors scaled by their weights. This gives us a net heading for which the agent should steers towards.
@@ -99,9 +103,10 @@ Secondly, we noticed that the prey were not really behaving in the same manner a
 [todo gif of normal behavior]  
 
 ## Collective Behaviours
+
 It was very interesting how many different collective behaviours we could create by adjusting the separation, alignment and cohesion weights.
 
-Here is one example where if the cohesion weight is suddenly increased significantly, the flocks will get stuck in an infinite loop circling each other. This could be useful if for whatever reason you wanted your swarms to converge and hold one spot.
+Here is one example where if the cohesion weight is suddenly increased significantly while the alignment and separation weights remain relatively low, the flocks will get stuck in an infinite loop circling each other. This could be useful if for whatever reason you wanted your swarms to converge and hold one spot.
 <p align="center">
   <img height= 500 img src="Images/WhirlPoolEffect.gif" /> 
 </p>
