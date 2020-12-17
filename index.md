@@ -47,6 +47,8 @@ Finally, if this remapped difference is negative we turn the agent right, and if
 ### Cohesion
 The third rule of Boids algorithm says that **agents should steer toward the flock's center of mass**.
 
+This consisted of first calculating the center of mass of the visible agents
+
 ## Adding Predators
 
 ### Inspiration
