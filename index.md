@@ -26,7 +26,9 @@ As we are investigating decentralized systems, all of our agents run identical c
 ### Separation
 The first rule of Boids algorithm says that **agents too close together will turn away from each other** to spread out.
 
-
+<p align="center">
+  <img src="Images/SeparationDiagramCropped.jpg" />
+</p>
 
 ### Alignment
 The second rule of Boids algorithm is that **agents within a flock should turn towards the average heading** of the flock. 
