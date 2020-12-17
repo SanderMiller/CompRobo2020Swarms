@@ -101,9 +101,9 @@ Secondly, we noticed that the prey were not really behaving in the same manner a
 ## Collective Behaviours
 It was very interesting how many different collective behaviours we could create by adjusting the separation, alignment and cohesion weights.
 
-Here is one example where if the cohesion weight is suddenly increased significantly, the flocks will get stuck in an infinite loop circling each other.
+Here is one example where if the cohesion weight is suddenly increased significantly, the flocks will get stuck in an infinite loop circling each other. This could be useful if for whatever reason you wanted to keep the
 <p align="center">
-  <img height= 300 img src="Images/WhirlPoolEffect.gif" />
+  <img height= 500 img src="Images/WhirlPoolEffect.gif" /> 
 </p>
 
 ## Next Steps
