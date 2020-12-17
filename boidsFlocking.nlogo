@@ -70,7 +70,6 @@ to alignment
    ;;initalize local variables
    let numLocalTurtles 1
    let avgHeading heading
-   let sumHeadings heading
    let xSum cos heading
    let ySum sin heading
    let initHeading heading
@@ -83,10 +82,9 @@ to alignment
   ;;find prey nearby
   ask other prey in-radius alignRadius
         [
-          ;;find the sum f the headings of the nearby prey
+          ;;find the sum of the headings of the nearby prey
           set xSum (xSum + (cos heading))
           set ySum (ySum + (sin heading))
-          set sumHeadings (sumHeadings + heading)
           set numLocalTurtles (numLocalTurtles + 1)
         ]
     ;;divide by total number of turtles to create an average heading
@@ -99,8 +97,8 @@ to alignment
 
     if numLocalTurtles > 1 and diff < 0 [rt .5 ]
     if numLocalTurtles > 1 and diff > 0 [lt .5 ]
-    if numLocalTurtles > 1 and initHeading - avgHeading < 0 [rt .5 ]
-    if numLocalTurtles > 1 and initHeading - avgHeading > 0 [lt .5 ]
+    if numLocalTurtles > 1 and initHeading - avgHeading < 0 [rt alignWeight]
+    if numLocalTurtles > 1 and initHeading - avgHeading > 0 [lt alignWeight]
   ][
     ;; if there is a predator nearby
 
@@ -114,8 +112,8 @@ to alignment
       let diff initHeading - headingAway
       if diff < -180 [set diff diff + 360]
       if diff > 180 [set diff diff - 360]
-      if diff  < 0 [rt turningSpeed]
-      if diff > 0 [lt turningSpeed]
+    if diff  < 0 [rt max (list alignWeight separationWeight coherenceWeight)]
+      if diff > 0 [lt max (list alignWeight separationWeight coherenceWeight)]
   ]
 end
 
@@ -143,8 +141,46 @@ to separation
       if diff < -180 [set diff diff + 360]
       if diff > 180 [set diff diff - 360]
 
-      if diff   < 0 [rt 1]
-      if diff > 0 [lt 1 ]
+      if diff   < 0 [rt separationWeight]
+      if diff > 0 [lt separationWeight]
+    ]
+end
+
+;; a function which turns a prey towards the center of mass of the flock
+to coherence
+   ;;initalize local variables
+   let numMates 1 ;;Num agents in the flock
+   let flockCMx 0 ;;Flock center of mass x
+   let flockCMy 0 ;;Flock center of mass y
+   let flockCMang heading ;;Angle to flock center of mass
+   let initHeading heading
+
+   ;;find visible agents
+   let closeMates other prey in-radius alignRadius
+
+   ;;if there are prey in visibility radius
+   if count closeMates != 0 [
+    ask closeMates
+        [
+          ;;convert the polar coordinates of other mates to cartesian and add to x and y sums
+          set flockCMx (flockCMx + (distance myself * cos towards myself ))
+          set flockCMy (flockCMy + (distance myself * sin towards myself))
+          set numMates (numMates + 1) ;;count number of agents
+        ]
+      ;;Average Center of Mass x and y
+      set flockCMx flockCMx / numMates
+      set flockCMy flockCMy / numMates
+
+
+      ;;find the heading towards the center of mass
+      set flockCMang  (atan (flockCMy) (flockCMx))
+
+      ;;turn towards center of mass
+      let diff initHeading - flockCMang
+      if diff < -180 [set diff diff + 360]
+      if diff > 180 [set diff diff - 360]
+      if diff   < 0 [lt coherenceWeight]
+      if diff > 0 [rt coherenceWeight]
     ]
 end
 
@@ -173,6 +209,7 @@ end
 to move-prey
  ;;apply the functions to every prey entity
  ask prey [
+   coherence
    alignment
    separation
    colorizeSwarms
@@ -224,10 +261,10 @@ ticks
 30.0
 
 BUTTON
-152
-842
-225
-875
+38
+843
+111
+876
 setup
 setup
 NIL
@@ -241,10 +278,10 @@ NIL
 1
 
 BUTTON
-152
-887
-215
-920
+38
+888
+101
+921
 go
 go
 T
@@ -258,25 +295,25 @@ NIL
 1
 
 SLIDER
-284
-935
-574
-968
+384
+936
+674
+969
 baseSpeed
 baseSpeed
 0.001 * numPrey
 0.01 * numPrey
-0.571
+0.3
 .01
 1
 NIL
 HORIZONTAL
 
 SLIDER
-622
-846
-799
-879
+722
+847
+899
+880
 alignmentRadius
 alignmentRadius
 1
@@ -288,40 +325,40 @@ NIL
 HORIZONTAL
 
 SLIDER
-622
-890
-889
-923
+722
+891
+989
+924
 separationRadiusPercentage
 separationRadiusPercentage
 0
 100
-20.0
+70.0
 5
 1
 NIL
 HORIZONTAL
 
 SLIDER
-283
-843
-455
-876
+383
+844
+555
+877
 numPrey
 numPrey
 1
 1000
-811.0
+291.0
 10
 1
 NIL
 HORIZONTAL
 
 SLIDER
-283
-888
-455
-921
+383
+889
+555
+922
 numPredators
 numPredators
 0
@@ -333,31 +370,61 @@ NIL
 HORIZONTAL
 
 SLIDER
-624
-938
-841
-971
+724
+939
+941
+972
 predatorViewMultiplier
 predatorViewMultiplier
 1
 5
-2.0
+1.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-626
-985
-798
-1018
-turningSpeed
-turningSpeed
+146
+841
+318
+874
+alignWeight
+alignWeight
+0
 1
-10
-3.0
+0.4
+.1
 1
+NIL
+HORIZONTAL
+
+SLIDER
+146
+890
+331
+923
+separationWeight
+separationWeight
+0
+1
+1.0
+.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+146
+938
+330
+971
+coherenceWeight
+coherenceWeight
+0
+1
+0.6
+.1
 1
 NIL
 HORIZONTAL
