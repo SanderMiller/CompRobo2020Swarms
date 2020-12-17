@@ -2,6 +2,7 @@
 ;; World = 10mx10m
 ;; Robot = 30cmx30
 ;; Sensing Distance = 50cm
+
 globals [predators prey]
 turtles-own
 [speed alignRadius separationRad predator]
@@ -23,7 +24,7 @@ to setup-turtles
     setxy random-xcor random-ycor
     set color one-of base-colors
     set speed baseSpeed
-      set alignRadius alignmentRadius
+    set alignRadius alignmentRadius
     set separationRad (separationRadiusPercentage * .01) * alignRadius
     set predator false
   ]
@@ -228,7 +229,7 @@ alignmentRadius
 alignmentRadius
 1
 10
-3.0
+10.0
 1
 1
 NIL
@@ -243,7 +244,7 @@ separationRadiusPercentage
 separationRadiusPercentage
 0
 100
-55.0
+20.0
 5
 1
 NIL
@@ -273,7 +274,7 @@ numPredators
 numPredators
 0
 5
-1.0
+0.0
 1
 1
 NIL
@@ -310,41 +311,6 @@ NIL
 HORIZONTAL
 
 @#$#@#$#@
-## WHAT IS IT?
-
-(a general understanding of what the model is trying to show or explain)
-
-## HOW IT WORKS
-
-(what rules the agents use to create the overall behavior of the model)
-
-## HOW TO USE IT
-
-(how to use the model, including a description of each of the items in the Interface tab)
-
-## THINGS TO NOTICE
-
-(suggested things for the user to notice while running the model)
-
-## THINGS TO TRY
-
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
-
-## EXTENDING THE MODEL
-
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
-
-## NETLOGO FEATURES
-
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
-
-## RELATED MODELS
-
-(models in the NetLogo Models Library and elsewhere which are of related interest)
-
-## CREDITS AND REFERENCES
-
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
 @#$#@#$#@
 default
 true
