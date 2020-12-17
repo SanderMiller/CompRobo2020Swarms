@@ -13,13 +13,7 @@ The agents used in our simulation have three properties, **color**, **speed**, a
 They are also able to **sense, localize, and transfer information** to any other agents within a given radius.
 
 
-### Agent Properties 
-- Heading
-- Color 
-- Speed 
 
-
-Our project 
 
 
 ## Implementation of Boids Algorithm
