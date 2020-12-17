@@ -30,7 +30,14 @@ To calculate the average heading of the flock we first found the corresponding a
   <img height= 400 img src="Images/CalculatingAvgHeading.jpg" />
 </p>
 
-Once the average heading is calculated we must determine whether the agent must turn left or right. To do this we first find the difference between the agent's current heading and the calculated heading `currentHeading - avgHeading`.
+Once the average heading is calculated we must determine whether the agent must turn left or right. To do this we first find the difference between the agent's current heading and the calculated heading `currentHeading - avgHeading`. Then this difference is mapped into the range of -180 to 180 degrees.
+
+        if difference < -180
+          difference += 360
+        elif difference > 180
+          difference -= 360
+
+
 
 
 ## Adding Predators
