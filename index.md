@@ -39,6 +39,8 @@ Once the average heading is calculated we must determine whether the agent must 
 
 Finally, if this remapped difference is negative we turn the agent right, and if the remapped difference is positive we turn the agent left.
 
+### Separation
+The second rule of boids algorithm says that agents too close together will trun away from each other to spread out.
 
 ## Adding Predators
 
