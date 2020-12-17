@@ -66,7 +66,7 @@ to go
 end
 
 ;;a function that corrects the heading of one prey turtle based on its sensor inputs
-to alignment
+to-report alignment
    ;;initalize local variables
    let numLocalTurtles 1
    let avgHeading heading
@@ -86,25 +86,18 @@ to alignment
     ;;divide by total number of turtles to create an average heading
     ifelse (xSum = 0) and (ySum = 0)[set avgHeading 0] [set avgHeading atan (ySum / numLocalTurtles) (xSum / numLocalTurtles)]
 
-    ;;turn towards the average heading
-    let diff initHeading - avgHeading
-    if diff < -180 [set diff diff + 360]
-    if diff > 180 [set diff diff - 360]
-
-    if numLocalTurtles > 1 and diff < 0 [rt .5 ]
-    if numLocalTurtles > 1 and diff > 0 [lt .5 ]
-    if numLocalTurtles > 1 and initHeading - avgHeading < 0 [rt alignmentWeight]
-    if numLocalTurtles > 1 and initHeading - avgHeading > 0 [lt alignmentWeight]
+  report avgHeading
 end
 
 ;; a function which turns a prey away from its neighbors if it is too close to the other prey
-to separation
+to-report separation
    ;;initalize local variables
    let numMates 1 ;;Num agents in the flock
    let flockCMx 0 ;;Flock center of mass x
    let flockCMy 0 ;;Flock center of mass y
    let flockCMang heading ;;Angle to flock center of mass
    let initHeading heading
+   let headingAway heading
 
     ;;find agents that are too close
    let closeMates other prey in-radius separationRad
@@ -126,20 +119,13 @@ to separation
       ;;find the heading towards the center of mass
       set flockCMang (atan (flockCMy) (flockCMx))
       ;;find the heading that points away from center of mass
-      let headingAway (flockCMang + 180) mod 360
-
-      ;;turn away from center of mass
-      let diff initHeading - headingAway
-      if diff < -180 [set diff diff + 360]
-      if diff > 180 [set diff diff - 360]
-      if diff   < 0 [lt separationWeight]
-      if diff > 0 [rt separationWeight]
-    ]
-
+      set headingAway (flockCMang + 180) mod 360
+  ]
+  report headingAway
 end
 
 ;; a function which turns a prey towards the center of mass of the flock
-to cohesion
+to-report cohesion
    ;;initalize local variables
    let numMates 1 ;;Num agents in the flock
    let flockCMx 0 ;;Flock center of mass x
@@ -166,15 +152,38 @@ to cohesion
 
       ;;find the heading towards the center of mass
       set flockCMang  (atan (flockCMy) (flockCMx))
-
-      ;;turn towards center of mass
-      let diff initHeading - flockCMang
-      if diff < -180 [set diff diff + 360]
-      if diff > 180 [set diff diff - 360]
-      if diff   < 0 [lt cohesionWeight]
-      if diff > 0 [rt cohesionWeight]
-    ]
+  ]
+  report flockCMang
 end
+
+to weightedSteering [currentHeading separationAng alignmentAng cohesionAng]
+  ;; Calculate cohesion X, Y vector coords
+  let cohesionX (cos ((cohesionAng + 180) mod 360))
+  let cohesionY (sin ((cohesionAng + 180) mod 360 ))
+
+  ;; Calculate separation X, Y vector coords
+  let separationX (cos ((separationAng + 180) mod 360))
+  let separationY (sin ((separationAng + 180) mod 360))
+
+  ;; Calculate calignment X, Y vector coords
+  let alignmentX (cos alignmentAng)
+  let alignmentY (sin alignmentAng)
+
+  ;; Sum vector coords and scale by weights
+  let netX (cohesionX * cohesionWeight * 10) + (separationX * separationWeight * 10) + (alignmentX * alignmentWeight * 10)
+  let netY (cohesionY * cohesionWeight * 10) + (separationY * separationWeight * 10) + (alignmentY * alignmentWeight * 10)
+
+  ;; Find net heading
+  let netHeading (atan (netY) (netX))
+
+  ;; turn towards net heading
+  let diff currentHeading - netHeading
+  if diff < -180 [set diff diff + 360]
+  if diff > 180 [set diff diff - 360]
+  if diff < 0 [rt 1]
+  if diff > 0 [lt 1]
+end
+
 
 ;;A function which generates the different colors for each swarm
 to colorizeSwarms
@@ -203,14 +212,20 @@ to move-prey
  ask prey [
    ;; Check for nearby predators
    let closePredators other predators in-radius (predatorViewMultiplier * alignRadius)
+   let closePrey other prey in-radius (alignRadius)
 
-
+   ;;if no predators around
    ifelse (count closePredators = 0)
    [
-   ;; if no nearby predators perform Boid's algorithm
-   separation
-   alignment
-   cohesion
+   ;; if visible agents perform Boid's algorithm and visible agents
+   if (count closePrey > 0)[
+   let separationAng separation
+   let alignmentAng alignment
+   let cohesionAng cohesion
+
+   ;; Calculate and steer to net heading
+   weightedSteering heading separationAng alignmentAng cohesionAng
+    ]
     ]
     [
     ;;if nearby predators run away
@@ -233,7 +248,7 @@ to move-prey
       if diff > 0 [lt 10]
     ]
 
-   colorizeSwarms
+   colorizeSwarms ;;Colorize flocks
    ;; add some small random noise to the movement
    rt random 2   ;; turn right
    lt random 2   ;; turn left
