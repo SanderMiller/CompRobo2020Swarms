@@ -144,9 +144,9 @@ end
 
 @#$#@#$#@
 GRAPHICS-WINDOW
-420
+0
 10
-1433
+1013
 824
 -1
 -1
@@ -171,9 +171,9 @@ ticks
 30.0
 
 BUTTON
-572
+152
 842
-645
+225
 875
 setup
 setup
@@ -188,9 +188,9 @@ NIL
 1
 
 BUTTON
-572
+152
 887
-635
+215
 920
 go
 go
@@ -205,9 +205,9 @@ NIL
 1
 
 SLIDER
-704
+284
 935
-994
+574
 968
 baseSpeed
 baseSpeed
@@ -220,9 +220,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-1042
+622
 846
-1219
+799
 879
 alignmentRadius
 alignmentRadius
@@ -235,9 +235,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-1042
+622
 890
-1309
+889
 923
 separationRadiusPercentage
 separationRadiusPercentage
@@ -250,9 +250,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-703
+283
 843
-875
+455
 876
 numPrey
 numPrey
@@ -265,9 +265,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-703
+283
 888
-875
+455
 921
 numPredators
 numPredators
@@ -280,9 +280,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-1044
+624
 938
-1261
+841
 971
 predatorViewMultiplier
 predatorViewMultiplier
@@ -295,9 +295,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-1046
+626
 985
-1218
+798
 1018
 turningSpeed
 turningSpeed
