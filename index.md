@@ -24,10 +24,10 @@ As we are investigating decentralized systems, all of our agents run identical c
 ## Implementation of Boids Algorithm
 
 ### Separation
-The first rule of Boids algorithm says that agents too close together will trun away from each other to spread out.
+The first rule of Boids algorithm says that **agents too close together will turn away from each other** to spread out.
 
 ### Alignment
-The second rule of Boids algorithm is that agents within a flock should turn towards the average heading of the flock. To do this we calculated the average heading of all agents within the visibility radius of each agent, and steered the agent accordingly. In NetLogo headings are given in degrees between 0 and 360. 
+The second rule of Boids algorithm is that **agents within a flock should turn towards the average heading** of the flock. To do this we calculated the average heading of all agents within the visibility radius of each agent, and steered the agent accordingly. In NetLogo headings are given in degrees between 0 and 360. 
 To calculate the average heading of the flock we first found the corresponding average x and y values of the heading angles by taking the sum of the cos and sin of each heading, and then dividing by the number visible agents within the flock. Then we took the inverse tangent of the average y value over the average x value. An example of calculating the average flock heading can be shown below.
 <p align="center">
   <img height= 400 img src="Images/CalculatingAvgHeading.jpg" />
@@ -43,7 +43,7 @@ Once the average heading is calculated we must determine whether the agent must 
 Finally, if this remapped difference is negative we turn the agent right, and if the remapped difference is positive we turn the agent left.
 
 ### Cohesion
-The third rule of Boids algorithm says that agents should steer toward the flock's center of mass.
+The third rule of Boids algorithm says that **agents should steer toward the flock's center of mass**.
 
 ## Adding Predators
 
