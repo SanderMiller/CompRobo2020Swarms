@@ -66,6 +66,11 @@ Again, we take the difference between the agent's current heading and the headin
 
 ### Steering
 Finally we add the three calculated headings, separation, alignment, and cohesion, as vectors scaled by their weights. This gives us a net heading for which the agent steers towards.
+
+<p align="center">
+  <img height= 300 img src="Images/NetSteeringCropped.jpg" />
+</p>
+
 ## Adding Predators
 
 ### Inspiration
