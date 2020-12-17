@@ -181,8 +181,8 @@ to weightedSteering [currentHeading separationAng alignmentAng cohesionAng]
   let diff currentHeading - netHeading
   if diff < -180 [set diff diff + 360]
   if diff > 180 [set diff diff - 360]
-  if diff < 0 [rt 3]
-  if diff > 0 [lt 3]
+  if diff < 0 [rt max (list 1 (abs(diff / 180) * 10))]
+  if diff > 0 [lt max (list 1 (abs(diff / 180) * 10))]
 end
 
 
