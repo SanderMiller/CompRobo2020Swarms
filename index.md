@@ -15,14 +15,14 @@ We were primarily interested in analyzing the collective behaviour of a swarm. I
 </p>
 
 The agents used in our simulation have three properties, **color**, **speed**, and **heading**. They have no sense of their absolute position within the map.
-They are also able to **sense, localize, and transfer information** to any other agents within a given radius. it should be noted that the agents localize one another in thier respective cordinate systems rather than in a global reference frame.
+They are also able to **sense, localize, and transfer information** to any other agents within a given radius. it should be noted that the agents localize one another in their respective cordinate systems rather than in a global reference frame.
 
 
 
 ## Implementation of Boids Algorithm
 
 ### Alignment
-The first rule of Boids algorithm is that agents within a flock should turn towards the average heading of the flock.
+The first rule of Boids algorithm is that agents within a flock should turn towards the average heading of the flock. To dod this we calculated the average heading of the 
 
 <p align="center">
   <img height= 400 img src="Images/CalculatingAvgHeading.jpg" />
@@ -47,11 +47,11 @@ To allow the prey to distinguish the predators the predators are initialized sep
 
 ### Difficulties
 
-Firstly we ran into the problem that predator's and prey had the same speed this led to behaviors where flocks of prey would get 'stuck' in front of the predator constantly running away in the direction of the predator's movement but the state would continue until the predator turned away. IN the real world predators, especially sharks of the inspiration material, are stronger and faster than their prey so they tend to outpace the prey and catch them. To rectify this we made the predator move at a multiple of 1.2 times the speed of the prey. This meant that the predator would catch up with the prey in a chase scenario. As a result of this the prey would be forced to veer of course more to escape the predator.
+Firstly we ran into the problem that predators and prey had the same speed this led to behaviors where flocks of prey would get 'stuck' in front of the predator constantly running away in the direction of the predator's movement but the state would continue until the predator turned away. IN the real world predators, especially sharks of the inspiration material, are stronger and faster than their prey so they tend to outpace the prey and catch them. To rectify this we made the predator move at a multiple of 1.2 times the speed of the prey. This meant that the predator would catch up with the prey in a chase scenario. As a result of this the prey would be forced to veer of course more to escape the predator.
 
 Secondly, we noticed that the prey were not really behaving in the same manner as we had observed in the video. The predators tended to 'snowplough' the prey out of the way running into them and forcing them out of the way , rather than the wide swaths around the predators we see in the inspiration.
 [TODO: gif of snowplough behavior]
- To solve this we realized that predators are often larger than the prey, and so prey are able to spot them form a larger distance away than they are able to recognise then fellow flock members. To replicate this we increased the recognition radius for the predators relative to the recognition radius for fellow flockmates. The result of this was that prey seemed to part in swaths for the predator similar to how we can see in the inspiration.
+ To solve this we realized that predators are often larger than the prey, and so prey are able to spot them from further away than they are able to recognise fellow flock members. To replicate this we increased the recognition radius for the predators relative to the recognition radius for fellow flockmates. The result of this was that prey seemed to part in swaths for the predator similar to how we can see in the inspiration.
 [todo gif of normal behavior]  
 
 ## Collective Behaviours
