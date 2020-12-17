@@ -92,8 +92,9 @@ Secondly, we noticed that the prey were not really behaving in the same manner a
 [todo gif of normal behavior]  
 
 ## Collective Behaviours
+We 
 
 ## Next Steps
-
+We have created a very solid baseline for modeling swarm behaviour, but there are many ways our model can be improved and built upon. Initially we were planning on including shape formation such as having our flocks forming V's like migrating birds. 
 ## Conclusion
 
