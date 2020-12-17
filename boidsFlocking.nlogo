@@ -157,6 +157,7 @@ to-report cohesion
 end
 
 to weightedSteering [currentHeading separationAng alignmentAng cohesionAng]
+  let netHeading currentHeading
   ;; Calculate cohesion X, Y vector coords
   let cohesionX (cos ((cohesionAng + 180) mod 360))
   let cohesionY (sin ((cohesionAng + 180) mod 360 ))
@@ -174,14 +175,14 @@ to weightedSteering [currentHeading separationAng alignmentAng cohesionAng]
   let netY (cohesionY * cohesionWeight * 10) + (separationY * separationWeight * 10) + (alignmentY * alignmentWeight * 10)
 
   ;; Find net heading
-  let netHeading (atan (netY) (netX))
+  ifelse (netX != 0)[set netHeading (atan (netY) (netX))][set netHeading (atan (netY) (0.0001))]
 
   ;; turn towards net heading
   let diff currentHeading - netHeading
   if diff < -180 [set diff diff + 360]
   if diff > 180 [set diff diff - 360]
-  if diff < 0 [rt 1]
-  if diff > 0 [lt 1]
+  if diff < 0 [rt 3]
+  if diff > 0 [lt 3]
 end
 
 
@@ -250,8 +251,8 @@ to move-prey
 
    colorizeSwarms ;;Colorize flocks
    ;; add some small random noise to the movement
-   rt random 2   ;; turn right
-   lt random 2   ;; turn left
+   rt random 1   ;; turn right
+   lt random 1   ;; turn left
    ;; go forward
    fd speed      ;; forward 1 step
   ]
@@ -339,7 +340,7 @@ baseSpeed
 baseSpeed
 0.001 * numPrey
 0.01 * numPrey
-0.3
+0.641
 .01
 1
 NIL
@@ -399,7 +400,7 @@ numPredators
 numPredators
 0
 5
-1.0
+0.0
 1
 1
 NIL
@@ -414,7 +415,7 @@ predatorViewMultiplier
 predatorViewMultiplier
 1
 5
-2.0
+4.0
 1
 1
 NIL
@@ -429,7 +430,7 @@ alignmentWeight
 alignmentWeight
 0
 1
-0.5
+1.0
 .1
 1
 NIL
@@ -444,7 +445,7 @@ separationWeight
 separationWeight
 0
 1
-0.5
+0.7
 .1
 1
 NIL
