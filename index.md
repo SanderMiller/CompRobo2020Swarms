@@ -44,14 +44,7 @@ To calculate the average heading of the flock we first found the corresponding a
   <img height= 400 img src="Images/CalculatingAvgHeading.jpg" />
 </p>
 
-Once the average heading is calculated we must determine whether the agent must turn left or right. To do this we first find the difference between the agent's current heading and the calculated heading `currentHeading - avgHeading`. Then this difference is mapped into the range of -180 to 180 degrees.
 
-        if difference < -180
-          difference += 360
-        elif difference > 180
-          difference -= 360
-
-Finally, if this remapped difference is negative we turn the agent right based on our alignment weight, and if the remapped difference is positive we turn the agent left by the alignment weight.
 
 ### Cohesion
 The third rule of Boids algorithm says that **agents should steer toward the flock's center of mass**.
@@ -65,11 +58,20 @@ This consisted of first calculating the center of mass of the visible agents. Du
 Again, we take the difference between the agent's current heading and the heading to the center of mass. Then similarly to the other two steps we remap that difference from -180 to 180. Finally, if this remapped difference is negative we turn the agent right based on our coherence weight, and if the remapped difference is positive we turn the agent left by the cohesion weight.
 
 ### Steering
-Finally we add the three calculated headings, separation, alignment, and cohesion, as vectors scaled by their weights. This gives us a net heading for which the agent steers towards.
+Finally we add the three calculated headings, separation, alignment, and cohesion, as vectors scaled by their weights. This gives us a net heading for which the agent should steers towards.
 
 <p align="center">
   <img height= 300 img src="Images/NetSteeringCropped.jpg" />
 </p>
+
+Once the net heading is calculated we must determine whether the agent must turn left or right. To do this we first find the difference between the agent's current heading and the net heading `currentHeading - netHeading`. Then this difference is mapped into the range of -180 to 180 degrees.
+
+        if difference < -180
+          difference += 360
+        elif difference > 180
+          difference -= 360
+
+Finally, if this remapped difference is negative we turn the agent right, and if the remapped difference is positive we turn the agent left.
 
 ## Adding Predators
 
