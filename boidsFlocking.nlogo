@@ -139,9 +139,9 @@ to separation
       let headingAway (headingToNearest + 180) mod 360
 
       ;;turn away form the nearest neighbor
-     let diff initHeading - headingAway
-     if diff < -180 [set diff diff + 360]
-     if diff > 180 [set diff diff - 360]
+      let diff initHeading - headingAway
+      if diff < -180 [set diff diff + 360]
+      if diff > 180 [set diff diff - 360]
 
       if diff   < 0 [rt 1]
       if diff > 0 [lt 1 ]
@@ -154,24 +154,22 @@ to colorizeSwarms
   ;;find neighbors within the flock
   let flockMates other prey in-radius alignRadius
   ;;initalize local variables
-  let hasNeighbors 0
   let colorSet [5 25 35 45 55 65 75 85 95 105 115 125 135]
   let mateColor one-of colorSet
 
   ;;set its color to a random not red color
   set color mateColor
 
-  ;;if there are other members in the pre's flock
+  ;;if there are other members in the prey's flock
   if count flockMates != 0 [
-    ;;full the most common color of its flockmates
+    ;;Find the most common color of its flockmates
     set mateColor one-of modes ([color] of flockMates)
     ;;set itself to that color
     set color mateColor
-    set hasNeighbors 1
     ]
 end
 
-;; the function whic moves prey entities
+;; the function which moves prey entities
 to move-prey
  ;;apply the functions to every prey entity
  ask prey [
@@ -193,7 +191,7 @@ to move-predators
    ;;add some small random noise to the movement
    rt random 4   ;; turn right
    lt random 4   ;; turn left
-   ;;move the predator forward slightly faster then the prey
+   ;;move the predator forward slightly faster than the prey
    fd 1.2 * speed     ;; forward 1 step
   ]
 end
@@ -268,7 +266,7 @@ baseSpeed
 baseSpeed
 0.001 * numPrey
 0.01 * numPrey
-0.261
+0.571
 .01
 1
 NIL
@@ -283,7 +281,7 @@ alignmentRadius
 alignmentRadius
 1
 10
-10.0
+4.0
 1
 1
 NIL
@@ -298,7 +296,7 @@ separationRadiusPercentage
 separationRadiusPercentage
 0
 100
-90.0
+20.0
 5
 1
 NIL
@@ -313,7 +311,7 @@ numPrey
 numPrey
 1
 1000
-251.0
+811.0
 10
 1
 NIL
@@ -328,7 +326,7 @@ numPredators
 numPredators
 0
 5
-2.0
+0.0
 1
 1
 NIL
