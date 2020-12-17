@@ -100,30 +100,42 @@ end
 ;; a function which turns a prey away from its neighbors if it is too close to the other prey
 to separation
    ;;initalize local variables
-   let numLocalTurtles 1
-   let xPosSum 0
-   let yPosSum 0
+   let numMates 1 ;;Num agents in the flock
+   let flockCMx 0 ;;Flock center of mass x
+   let flockCMy 0 ;;Flock center of mass y
+   let flockCMang heading ;;Angle to flock center of mass
    let initHeading heading
 
-   ;;find turtles that are too close
+    ;;find agents that are too close
    let closeMates other prey in-radius separationRad
 
-   ;;if there are prey that are too close
+   ;;if there are prey too close
    if count closeMates != 0 [
-      ;;find the heading towards the nearest prey
-      let nearestNeighbor min-one-of closeMates [distance myself]
-      let headingToNearest towards nearestNeighbor
-      ;;find the heading that points away from that neighbor
-      let headingAway (headingToNearest + 180) mod 360
+    ask closeMates
+        [
+          ;;convert the polar coordinates of other mates to cartesian and add to x and y sums
+          set flockCMx (flockCMx + (distance myself * cos towards myself ))
+          set flockCMy (flockCMy + (distance myself * sin towards myself))
+          set numMates (numMates + 1) ;;count number of agents
+        ]
+      ;;Average Center of Mass x and y
+      set flockCMx flockCMx / numMates
+      set flockCMy flockCMy / numMates
 
-      ;;turn away form the nearest neighbor
+
+      ;;find the heading towards the center of mass
+      set flockCMang (atan (flockCMy) (flockCMx))
+      ;;find the heading that points away from center of mass
+      let headingAway (flockCMang + 180) mod 360
+
+      ;;turn away from center of mass
       let diff initHeading - headingAway
       if diff < -180 [set diff diff + 360]
       if diff > 180 [set diff diff - 360]
-
-      if diff   < 0 [rt separationWeight]
-      if diff > 0 [lt separationWeight]
+      if diff   < 0 [lt separationWeight]
+      if diff > 0 [rt separationWeight]
     ]
+
 end
 
 ;; a function which turns a prey towards the center of mass of the flock
