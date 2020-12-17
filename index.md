@@ -38,8 +38,8 @@ Our separation radius is defined as a percentage of the visibility radius. Any a
 ### Alignment
 The second rule of Boids algorithm is that **agents within a flock should turn towards the average heading** of the flock. 
 
-To do this we calculated the average heading of all agents within the visibility radius of each agent, and steered the agent accordingly. In NetLogo headings are given in degrees between 0 and 360. 
-To calculate the average heading of the flock we first found the corresponding average x and y values of the heading angles by taking the sum of the cos and sin of each heading, and then dividing by the number visible agents within the flock. Then we took the inverse tangent of the average y value over the average x value. An example of calculating the average flock heading can be shown below.
+To do this we calculated the average heading of all agents within the visibility radius of each agent. In NetLogo headings are given in degrees between 0 and 360. 
+To calculate the average heading of the flock we first found the corresponding average _x_ and _y_ values of the heading angles by taking the sum of the _cos_ and _sin_ of each heading, then dividing by the number visible agents within the flock. Then we took the inverse tangent of the average y value over the average x value. An example of calculating the average flock heading can be shown below.
 <p align="center">
   <img height= 400 img src="Images/CalculatingAvgHeading.jpg" />
 </p>
