@@ -15,7 +15,9 @@ We were primarily interested in analyzing the collective behaviour of a swarm. I
 </p>
 
 The agents used in our simulation have three properties, **color**, **speed**, and **heading**. They have no sense of their absolute position within the map.
-They are also able to **sense, localize, and transfer information** to any other agents within a given radius. it should be noted that the agents localize one another in their respective cordinate systems rather than in a global reference frame.
+They are also able to **sense, localize, and transfer information** to any other agents within a given radius. It should be noted that the agents localize one another in their respective cordinate systems rather than in a global reference frame.
+
+As we are investigating decentralized systems, all of our agents run identical code.
 
 
 
