@@ -15,7 +15,7 @@ We were primarily interested in analyzing the collective behaviour of a swarm. I
 </p>
 
 The agents used in our simulation have three properties, **color**, **speed**, and **heading**. They have no sense of their absolute position within the map.
-They are also able to **sense, localize, and transfer information** to any other agents within a given radius. It should be noted that the agents localize one another in their respective cordinate systems rather than in a global reference frame.
+They are also able to **sense, localize, and transfer information** to any other agents within a given radius. It should be noted that the agents localize one another in their respective coordinate systems rather than in a global reference frame.
 
 As we are investigating decentralized systems, all of our agents run identical code.
 
@@ -47,7 +47,7 @@ Finally, if this remapped difference is negative we turn the agent right, and if
 ### Cohesion
 The third rule of Boids algorithm says that **agents should steer toward the flock's center of mass**.
 
-This consisted of first calculating the center of mass of the visible agents
+This consisted of first calculating the center of mass of the visible agents. Due to the decentralized architecture of the swarm the aents are unaware of their absolute position. Instead we can track visible flockmates positions as a polar coordinates (distance and angle) with respect to a given agent. These polar coordinates are converted to cartesian coordinates using the equations _x = r * cos(θ)_ and _y = r * sin(θ)_.
 
 ## Adding Predators
 
