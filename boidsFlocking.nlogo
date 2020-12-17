@@ -93,6 +93,12 @@ to alignment
     ifelse (xSum = 0) and (ySum = 0)[set avgHeading 0] [set avgHeading atan (ySum / numLocalTurtles) (xSum / numLocalTurtles)]
 
     ;;turn towards the average heading
+    let diff initHeading - avgHeading
+    if diff < -180 [set diff diff + 360]
+    if diff > 180 [set diff diff - 360]
+
+    if numLocalTurtles > 1 and diff < 0 [rt .5 ]
+    if numLocalTurtles > 1 and diff > 0 [lt .5 ]
     if numLocalTurtles > 1 and initHeading - avgHeading < 0 [rt .5 ]
     if numLocalTurtles > 1 and initHeading - avgHeading > 0 [lt .5 ]
   ][
@@ -105,8 +111,11 @@ to alignment
       ;; find the heading that points directly away from the predator
       let headingAway (headingToNearest + 180) mod 360
       ;;turn away from the predator
-      if initHeading - headingAway  < 0 [rt turningSpeed]
-      if initHeading - headingAway > 0 [lt turningSpeed]
+      let diff initHeading - headingAway
+      if diff < -180 [set diff diff + 360]
+      if diff > 180 [set diff diff - 360]
+      if diff  < 0 [rt turningSpeed]
+      if diff > 0 [lt turningSpeed]
   ]
 end
 
@@ -130,8 +139,12 @@ to separation
       let headingAway (headingToNearest + 180) mod 360
 
       ;;turn away form the nearest neighbor
-      if initHeading - headingAway  < 0 [rt 1 ]
-      if initHeading - headingAway > 0 [lt 1 ]
+     let diff initHeading - headingAway
+     if diff < -180 [set diff diff + 360]
+     if diff > 180 [set diff diff - 360]
+
+      if diff   < 0 [rt 1]
+      if diff > 0 [lt 1 ]
     ]
 end
 
@@ -285,7 +298,7 @@ separationRadiusPercentage
 separationRadiusPercentage
 0
 100
-20.0
+90.0
 5
 1
 NIL
