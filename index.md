@@ -64,6 +64,8 @@ This consisted of first calculating the center of mass of the visible agents. Du
 
 Again, we take the difference between the agent's current heading and the heading to the center of mass. Then similarly to the other two steps we remap that difference from -180 to 180. Finally, if this remapped difference is negative we turn the agent right based on our coherence weight, and if the remapped difference is positive we turn the agent left by the cohesion weight.
 
+### Steering
+Finally we add the three calculated headings, separation, alignment, and cohesion, as vectors scaled by their weights. This gives us a net heading for which the agent steers towards.
 ## Adding Predators
 
 ### Inspiration
