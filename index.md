@@ -26,9 +26,14 @@ As we are investigating decentralized systems, all of our agents run identical c
 ### Separation
 The first rule of Boids algorithm says that **agents too close together will turn away from each other** to spread out.
 
+
+Our separation radius is defined as a percentage of the visibility radius. Any agents within this radius are considered too close. In order to maintain spacing the separation function provides the heading 
+
 <p align="center">
   <img src="Images/SeparationDiagramCropped.jpg" />
 </p>
+
+
 
 ### Alignment
 The second rule of Boids algorithm is that **agents within a flock should turn towards the average heading** of the flock. 
