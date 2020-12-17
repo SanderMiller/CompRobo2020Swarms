@@ -74,13 +74,9 @@ to alignment
    let ySum sin heading
    let initHeading heading
 
-  ;;search for any predators nearby
-  let closePredators other predators in-radius (predatorViewMultiplier * alignRadius)
-  ;; if there are not predators close by
-  ifelse (count closePredators = 0)[
+
   ;; average the headings of the prey nearby if there are no predators nearby
-  ;;find prey nearby
-  ask other prey in-radius alignRadius
+  ask other prey in-radius alignRadius ;;find prey nearby
         [
           ;;find the sum of the headings of the nearby prey
           set xSum (xSum + (cos heading))
@@ -97,24 +93,8 @@ to alignment
 
     if numLocalTurtles > 1 and diff < 0 [rt .5 ]
     if numLocalTurtles > 1 and diff > 0 [lt .5 ]
-    if numLocalTurtles > 1 and initHeading - avgHeading < 0 [rt alignWeight]
-    if numLocalTurtles > 1 and initHeading - avgHeading > 0 [lt alignWeight]
-  ][
-    ;; if there is a predator nearby
-
-      ;; find the nearest predator
-      let nearestPred min-one-of closePredators [distance myself]
-      ;; find the heading pointing towards the nearest predator
-      let headingToNearest towards nearestPred
-      ;; find the heading that points directly away from the predator
-      let headingAway (headingToNearest + 180) mod 360
-      ;;turn away from the predator
-      let diff initHeading - headingAway
-      if diff < -180 [set diff diff + 360]
-      if diff > 180 [set diff diff - 360]
-    if diff  < 0 [rt max (list alignWeight separationWeight coherenceWeight)]
-      if diff > 0 [lt max (list alignWeight separationWeight coherenceWeight)]
-  ]
+    if numLocalTurtles > 1 and initHeading - avgHeading < 0 [rt alignmentWeight]
+    if numLocalTurtles > 1 and initHeading - avgHeading > 0 [lt alignmentWeight]
 end
 
 ;; a function which turns a prey away from its neighbors if it is too close to the other prey
@@ -209,9 +189,38 @@ end
 to move-prey
  ;;apply the functions to every prey entity
  ask prey [
-   coherence
-   alignment
+   ;; Check for nearby predators
+   let closePredators other predators in-radius (predatorViewMultiplier * alignRadius)
+
+
+   ifelse (count closePredators = 0)
+   [
+   ;; if no nearby predators perform Boid's algorithm
    separation
+   alignment
+   coherence
+    ]
+    [
+    ;;if nearby predators run away
+      let initHeading heading ;;save current heading
+
+      ;; find the nearest predator
+      let nearestPred min-one-of closePredators [distance myself]
+
+      ;; find the heading pointing towards the nearest predator
+      let headingToNearest towards nearestPred
+
+      ;; find the heading that points directly away from the predator
+      let headingAway (headingToNearest + 180) mod 360
+
+      ;;turn away from the predator
+      let diff initHeading - headingAway
+      if diff < -180 [set diff diff + 360]
+      if diff > 180 [set diff diff - 360]
+      if diff  < 0 [rt 10]
+      if diff > 0 [lt 10]
+    ]
+
    colorizeSwarms
    ;; add some small random noise to the movement
    rt random 2   ;; turn right
@@ -318,7 +327,7 @@ alignmentRadius
 alignmentRadius
 1
 10
-4.0
+5.0
 1
 1
 NIL
@@ -333,7 +342,7 @@ separationRadiusPercentage
 separationRadiusPercentage
 0
 100
-70.0
+50.0
 5
 1
 NIL
@@ -363,7 +372,7 @@ numPredators
 numPredators
 0
 5
-0.0
+1.0
 1
 1
 NIL
@@ -378,7 +387,7 @@ predatorViewMultiplier
 predatorViewMultiplier
 1
 5
-1.0
+2.0
 1
 1
 NIL
@@ -387,13 +396,13 @@ HORIZONTAL
 SLIDER
 146
 841
-318
+319
 874
-alignWeight
-alignWeight
+alignmentWeight
+alignmentWeight
 0
 1
-0.4
+0.5
 .1
 1
 NIL
@@ -408,7 +417,7 @@ separationWeight
 separationWeight
 0
 1
-1.0
+0.5
 .1
 1
 NIL
@@ -423,7 +432,7 @@ coherenceWeight
 coherenceWeight
 0
 1
-0.6
+0.5
 .1
 1
 NIL
