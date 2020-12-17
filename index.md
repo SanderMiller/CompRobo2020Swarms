@@ -26,6 +26,8 @@ As we are investigating decentralized systems, all of our agents run identical c
 ### Separation
 The first rule of Boids algorithm says that **agents too close together will turn away from each other** to spread out.
 
+
+
 ### Alignment
 The second rule of Boids algorithm is that **agents within a flock should turn towards the average heading** of the flock. 
 
@@ -53,7 +55,7 @@ This consisted of first calculating the center of mass of the visible agents. Du
   <img height= 350 img src="Images/CohesionUpdatedCropped.jpg" />
 </p>
 
-Again, we take the difference between the agent's current heading and the heading to the center of mass. Then similarly to the other two steps we remap that difference from -180 to 180. Finally, if this remapped difference is negative we turn the agent right based on our coherence weight, and if the remapped difference is positive we turn the agent left by the coherence weight.
+Again, we take the difference between the agent's current heading and the heading to the center of mass. Then similarly to the other two steps we remap that difference from -180 to 180. Finally, if this remapped difference is negative we turn the agent right based on our coherence weight, and if the remapped difference is positive we turn the agent left by the cohesion weight.
 
 ## Adding Predators
 
