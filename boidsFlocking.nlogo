@@ -3,53 +3,71 @@
 ;; Robot = 30cmx30
 ;; Sensing Distance = 50cm
 
+;; define global variables
 globals [predators prey]
+
+;;define what variables turtles hold
 turtles-own
 [speed alignRadius separationRad predator]
 
-
+;;called when the setup button is pressed
 to setup
   clear-all
   reset-ticks
   setup-turtles
 end
 
-
+;; a function which configures the turtles
 to setup-turtles
 
+  ;;create the prey turtles
   create-turtles numPrey
-
-
   [set size 3 ;;30cm
+    ;; randomize the position
     setxy random-xcor random-ycor
+    ;;set the color to be one of the starting colors
     set color one-of base-colors
+
+    ;;configure the values controlled by the sliders
     set speed baseSpeed
     set alignRadius alignmentRadius
     set separationRad (separationRadiusPercentage * .01) * alignRadius
+
+    ;;notate that these are prey
     set predator false
   ]
+  ;; create an agent set containing the prey
   set prey turtles with [predator = False]
+
+  ;;create the preadators
   create-turtles numPredators
   [set size 5 ;;30cm
+    ;;randomize the position
     setxy random-xcor random-ycor
+    ;;display the predators as red arrows so they are distinguishable
     set color red
     set shape "Arrow"
+    ;;set the predator's speed
     set speed baseSpeed
+    ;;denote that this is a predator
     set predator true
   ]
+  ;;create an agent set holding the predators
   set predators turtles with [predator = True]
-
 
 end
 
+;;the function that is called to start the simulation
 to go
   move-prey
   move-predators
+  ;;update the time to move forward one tick
   tick
 end
 
-
+;;a function that corrects the heading of one prey turtle based on its sensor inputs
 to alignment
+   ;;initalize local variables
    let numLocalTurtles 1
    let avgHeading heading
    let sumHeadings heading
@@ -57,92 +75,115 @@ to alignment
    let ySum sin heading
    let initHeading heading
 
+  ;;search for any predators nearby
   let closePredators other predators in-radius (predatorViewMultiplier * alignRadius)
+  ;; if there are not predators close by
   ifelse (count closePredators = 0)[
+  ;; average the headings of the prey nearby if there are no predators nearby
+  ;;find prey nearby
   ask other prey in-radius alignRadius
         [
+          ;;find the sum f the headings of the nearby prey
           set xSum (xSum + (cos heading))
           set ySum (ySum + (sin heading))
           set sumHeadings (sumHeadings + heading)
           set numLocalTurtles (numLocalTurtles + 1)
         ]
+    ;;divide by total number of turtles to create an average heading
     ifelse (xSum = 0) and (ySum = 0)[set avgHeading 0] [set avgHeading atan (ySum / numLocalTurtles) (xSum / numLocalTurtles)]
+
+    ;;turn towards the average heading
     if numLocalTurtles > 1 and initHeading - avgHeading < 0 [rt .5 ]
     if numLocalTurtles > 1 and initHeading - avgHeading > 0 [lt .5 ]
   ][
+    ;; if there is a predator nearby
+
+      ;; find the nearest predator
       let nearestPred min-one-of closePredators [distance myself]
+      ;; find the heading pointing towards the nearest predator
       let headingToNearest towards nearestPred
+      ;; find the heading that points directly away from the predator
       let headingAway (headingToNearest + 180) mod 360
+      ;;turn away from the predator
       if initHeading - headingAway  < 0 [rt turningSpeed]
       if initHeading - headingAway > 0 [lt turningSpeed]
   ]
-
-
 end
 
+;; a function which turns a prey away from its neighbors if it is too close to the other prey
 to separation
+   ;;initalize local variables
    let numLocalTurtles 1
    let xPosSum 0
    let yPosSum 0
    let initHeading heading
 
-
+   ;;find turtles that are too close
    let closeMates other prey in-radius separationRad
-   ;;let closePrey closeMates with [not member? predators]
 
-
-  ;; Currently Steers from nearest neighbor
+   ;;if there are prey that are too close
    if count closeMates != 0 [
+      ;;find the heading towards the nearest prey
       let nearestNeighbor min-one-of closeMates [distance myself]
       let headingToNearest towards nearestNeighbor
+      ;;find the heading that points away from that neighbor
       let headingAway (headingToNearest + 180) mod 360
 
+      ;;turn away form the nearest neighbor
       if initHeading - headingAway  < 0 [rt 1 ]
       if initHeading - headingAway > 0 [lt 1 ]
     ]
-   ask closeMates[
-          ;;set color red
-    ]
 end
 
+;;A function which generates the different colors for each swarm
 to colorizeSwarms
 
+  ;;find neighbors within the flock
   let flockMates other prey in-radius alignRadius
+  ;;initalize local variables
   let hasNeighbors 0
   let colorSet [5 25 35 45 55 65 75 85 95 105 115 125 135]
   let mateColor one-of colorSet
+
+  ;;set its color to a random not red color
   set color mateColor
 
+  ;;if there are other members in the pre's flock
   if count flockMates != 0 [
+    ;;full the most common color of its flockmates
     set mateColor one-of modes ([color] of flockMates)
+    ;;set itself to that color
     set color mateColor
     set hasNeighbors 1
     ]
-
 end
 
+;; the function whic moves prey entities
 to move-prey
+ ;;apply the functions to every prey entity
  ask prey [
-   ;;set color blue
    alignment
    separation
    colorizeSwarms
+   ;; add some small random noise to the movement
    rt random 2   ;; turn right
    lt random 2   ;; turn left
+   ;; go forward
    fd speed      ;; forward 1 step
-
   ]
 end
 
+;; the function which moves all of the predators
 to move-predators
+  ;;have each predator do the following actions
   ask predators[
+   ;;add some small random noise to the movement
    rt random 4   ;; turn right
    lt random 4   ;; turn left
+   ;;move the predator forward slightly faster then the prey
    fd 1.2 * speed     ;; forward 1 step
   ]
 end
-
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 0
@@ -274,7 +315,7 @@ numPredators
 numPredators
 0
 5
-0.0
+2.0
 1
 1
 NIL
