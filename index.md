@@ -47,7 +47,7 @@ Finally, if this remapped difference is negative we turn the agent right, and if
 ### Cohesion
 The third rule of Boids algorithm says that **agents should steer toward the flock's center of mass**.
 
-This consisted of first calculating the center of mass of the visible agents. Due to the decentralized architecture of the swarm the aents are unaware of their absolute position. Instead we can track visible flockmates positions as a polar coordinates (distance and angle) with respect to a given agent. These polar coordinates are converted to cartesian coordinates using the equations _x = r * cos(θ)_ and _y = r * sin(θ)_.
+This consisted of first calculating the center of mass of the visible agents. Due to the decentralized architecture of the swarm the aents are unaware of their absolute position. Instead we can track visible flockmates positions as a polar coordinates (distance and angle) with respect to a given agent. These polar coordinates are converted to cartesian coordinates using the equations _x = r * cos(θ)_ and _y = r * sin(θ)_. The x and y coordinates for each flock member are added together and then averaged. This gives us the _x_ and _y_ coordinates of the flock's center of mass with respect to a given agent. In order to get the heading to the center of mass we simply take the inverse tangent of the average y coordinate over the average x coordinate.
 
 ## Adding Predators
 
