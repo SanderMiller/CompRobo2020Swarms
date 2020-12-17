@@ -21,7 +21,7 @@ to setup-turtles
 
   [set size 3 ;;30cm
     setxy random-xcor random-ycor
-    set color blue
+    set color one-of base-colors
     set speed baseSpeed
       set alignRadius alignmentRadius
     set separationRad (separationRadiusPercentage * .01) * alignRadius
@@ -142,12 +142,11 @@ to move-predators
 end
 
 
-
 @#$#@#$#@
 GRAPHICS-WINDOW
-869
+420
 10
-1882
+1433
 824
 -1
 -1
@@ -172,10 +171,10 @@ ticks
 30.0
 
 BUTTON
-34
-29
-107
-62
+572
+842
+645
+875
 setup
 setup
 NIL
@@ -189,10 +188,10 @@ NIL
 1
 
 BUTTON
-38
-79
-101
-112
+572
+887
+635
+920
 go
 go
 T
@@ -206,70 +205,70 @@ NIL
 1
 
 SLIDER
-119
-28
-409
-61
+704
+935
+994
+968
 baseSpeed
 baseSpeed
 0.001 * numPrey
 0.01 * numPrey
-0.431
+0.261
 .01
 1
 NIL
 HORIZONTAL
 
 SLIDER
-428
-28
-605
-61
+1042
+846
+1219
+879
 alignmentRadius
 alignmentRadius
 1
 10
-5.0
+3.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-429
-72
-696
-105
+1042
+890
+1309
+923
 separationRadiusPercentage
 separationRadiusPercentage
 0
 100
-50.0
+55.0
 5
 1
 NIL
 HORIZONTAL
 
 SLIDER
-123
-75
-295
-108
+703
+843
+875
+876
 numPrey
 numPrey
 1
-200
-200.0
+1000
+251.0
 10
 1
 NIL
 HORIZONTAL
 
 SLIDER
-123
-125
-295
-158
+703
+888
+875
+921
 numPredators
 numPredators
 0
@@ -281,10 +280,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-430
-118
-647
-151
+1044
+938
+1261
+971
 predatorViewMultiplier
 predatorViewMultiplier
 1
@@ -296,15 +295,15 @@ NIL
 HORIZONTAL
 
 SLIDER
-432
-167
-604
-200
+1046
+985
+1218
+1018
 turningSpeed
 turningSpeed
 1
 10
-10.0
+3.0
 1
 1
 NIL
